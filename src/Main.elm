@@ -5,13 +5,13 @@ import Css exposing (..)
 import Html
 
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (..)
-import Html.Styled.Events exposing (..)
+import Html.Styled.Attributes as Attr exposing (..)
+import Html.Styled.Events as Evt exposing ( onInput, onCheck )
 
 main = Browser.element
          { init = init 
          , update = update
-         , view = view
+         , view = view >> toUnstyled
          , subscriptions = subscriptions
          }
 
@@ -27,11 +27,9 @@ type alias Model =
 
 init : () -> (Model, Cmd Msg)
 init _ = 
-  ( { accounts = 
-      [ { id = 1, name = "John", age = 42 }
-      , { id = 2, name = "Jake", age = 43 }
-      , { id = 3, name = "Jack", age = 44 }
-      ]
+  ( { username = ""
+    , password = ""
+    , rememberPass = False
     }
   , Cmd.none)
 
@@ -42,17 +40,17 @@ type Msg
 
 
 -- UPDATE
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model = 
   case msg of 
     UsernameChange username ->
-      { model | username = username }
+      ({ model | username = username }, Cmd.none)
     
     PasswordChange password ->
-      { model | password = password }
+      ({ model | password = password }, Cmd.none)
     
     RememberPass isRemember ->
-      { model | rememberPass = isRemember }
+      ({ model | rememberPass = isRemember }, Cmd.none)
 
 
 -- SUBSCRIPTIONS
@@ -71,43 +69,41 @@ view model =
   div []
     [ viewInputText "text" model.username "Username" "username" "ar_input_username" UsernameChange 
     , viewInputText "password" model.password "Password" "password" "ar_input_password" PasswordChange
-    , viewCheckbox "yes" "Remember Password" "remember-password" "ar_chk_remember_pass" RememberPass
+    , viewCheckbox "yes" "Remember Password" "remember-password" "ar_chk_remember_pass" model.rememberPass RememberPass
     ]
 
-viewInputText : String -> String -> String -> String -> String -> ( String -> msg ) -> Html Msg
+viewInputText : String -> String -> String -> String -> String -> ( String -> msg ) -> Html msg
 viewInputText typ val inputTitle inputName inputID evt = 
   div 
-    [ class "ar-input-container"
-    ]
+    [ class "ar-input-container" ]
     [ input
-        [ type_ typ 
-        , class ( "ar-input-" ++ typ ) 
-        , value val
-        , placeholder inputTitle
-        , name inputName
-        , id inputID
-        , onInput evt 
-        , css 
+        [ Attr.type_ typ 
+        , Attr.class ( "ar-input-" ++ typ ) 
+        , Attr.value val
+        , Attr.placeholder inputTitle
+        , Attr.name inputName
+        , Attr.id inputID
+        , Evt.onInput evt 
+        , Attr.css 
             [ padding (px 5)
             , border3 (px 1) solid (rgba 0 0 0 0.2)
             , borderRadius (px 4)
             ]
-        ]
+        ] []
     ]
 
-viewCheckbox : String -> String -> String -> String -> Bool -> ( Bool -> msg ) -> Html Msg
+viewCheckbox : String -> String -> String -> String -> Bool -> ( Bool -> msg ) -> Html msg
 viewCheckbox val inputTitle inputName inputID isChecked evt = 
   div 
-    [ class "ar-checkbox-container"
-    ]
+    [ class "ar-checkbox-container" ]
     [ input
-        [ type_ "checkbox" 
-        , class ( "ar-input-checkbox" ) 
-        , value val
-        , checked isChecked
-        , placeholder inputTitle
-        , name inputName
-        , id inputID
-        , onCheck evt
-        ]
+        [ Attr.type_ "checkbox" 
+        , Attr.class ( "ar-input-checkbox" ) 
+        , Attr.value val
+        , Attr.checked isChecked
+        , Attr.placeholder inputTitle
+        , Attr.name inputName
+        , Attr.id inputID
+        , Evt.onCheck evt
+        ] []
     ]
