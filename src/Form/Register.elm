@@ -1,4 +1,4 @@
-module Form.Register exposing (..)
+module Form.Register exposing (init, update, view, Model, Msg)
 
 import Browser
 import Css exposing (..)
@@ -19,14 +19,13 @@ type alias Model =
   }
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> Model
 init _ = 
-  ( { username = ""
-    , password = ""
-    , passConfirm = ""
-    , isPassMatched = False
-    }
-  , Cmd.none)
+  { username = ""
+  , password = ""
+  , passConfirm = ""
+  , isPassMatched = False
+  }
 
 type Msg
   = UsernameChange String 
@@ -35,25 +34,25 @@ type Msg
 
 
 -- UPDATE
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> Model
 update msg model = 
   case msg of 
     UsernameChange username ->
-      ({ model | username = username }, Cmd.none)
+      { model | username = username }
     
     PasswordChange password ->
       if model.passConfirm == password then 
-        ({ model | isPassMatched = True}, Cmd.none)
+        { model | isPassMatched = True}
       
       else 
-        ({ model | isPassMatched = False}, Cmd.none)
+        { model | isPassMatched = False}
     
     PassConfirmChange passConfirm ->
       if model.passConfirm == passConfirm then 
-        ({ model | isPassMatched = True}, Cmd.none)
+        { model | isPassMatched = True}
       
       else 
-        ({ model | isPassMatched = False}, Cmd.none)
+        { model | isPassMatched = False}
 
 
 -- SUBSCRIPTIONS

@@ -1,4 +1,4 @@
-module Form.Login exposing ( init, update, subscriptions, view )
+module Form.Login exposing ( init, update, view, Model, Msg)
 
 import Browser
 import Css exposing (..)
@@ -18,13 +18,12 @@ type alias Model =
   }
 
 
-init : () -> (Model, Cmd Msg)
+init : () -> Model
 init _ = 
-  ( { username = ""
-    , password = ""
-    , rememberPass = False
-    }
-  , Cmd.none)
+  { username = ""
+  , password = ""
+  , rememberPass = False
+  }
 
 type Msg
   = UsernameChange String 
@@ -33,17 +32,17 @@ type Msg
 
 
 -- UPDATE
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> Model
 update msg model = 
   case msg of 
     UsernameChange username ->
-      ({ model | username = username }, Cmd.none)
+      { model | username = username }
     
     PasswordChange password ->
-      ({ model | password = password }, Cmd.none)
+      { model | password = password }
     
     RememberPass isRemember ->
-      ({ model | rememberPass = isRemember }, Cmd.none)
+      { model | rememberPass = isRemember }
 
 
 -- SUBSCRIPTIONS
