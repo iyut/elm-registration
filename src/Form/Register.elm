@@ -1,11 +1,11 @@
 module Form.Register exposing (init, update, view, Model, Msg)
 
 import Browser
-import Css exposing (..)
+import Css
 import Html
 
 import Html.Styled exposing (..)
-import Html.Styled.Attributes as Attr exposing (..)
+import Html.Styled.Attributes as Attr exposing ( class, type_, id, name, placeholder, css, value )
 import Html.Styled.Events as Evt exposing ( onInput, onCheck )
 
 
@@ -77,7 +77,7 @@ view model =
 viewInputText : String -> String -> String -> String -> String -> ( String -> msg ) -> Html msg
 viewInputText typ val inputTitle inputName inputID evt = 
   div 
-    [ class "ar-input-container" ]
+    [ Attr.class "ar-input-container" ]
     [ input
         [ Attr.type_ typ 
         , Attr.class ( "ar-input-" ++ typ ) 
@@ -87,9 +87,9 @@ viewInputText typ val inputTitle inputName inputID evt =
         , Attr.id inputID
         , Evt.onInput evt 
         , Attr.css 
-            [ padding (px 5)
-            , border3 (px 1) solid (rgba 0 0 0 0.2)
-            , borderRadius (px 4)
+            [ Css.padding (Css.px 5)
+            , Css.border3 (Css.px 1) Css.solid (Css.rgba 0 0 0 0.2)
+            , Css.borderRadius (Css.px 4)
             ]
         ] []
     ]
@@ -101,7 +101,7 @@ viewResult model =
   in
    
     div 
-      [ class "ar-result-container" ]
+      [ Attr.class "ar-result-container" ]
       [ text resultText ]
 
 textResult : Model -> String 

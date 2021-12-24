@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Browser
-import Css exposing (..)
+import Css
 import Html
 
 import Html.Styled exposing (..)
@@ -87,7 +87,9 @@ subscriptions model
 
 view : Model -> Html Msg 
 view model = 
-  div []
+  div 
+    [ class "ar-tab-container"
+    ]
     [ viewListTab model
     , viewContentTab model
     ]
@@ -119,7 +121,7 @@ viewListTabLink model message linkText =
       [ a 
         [ Evt.onClick message 
         , Attr.css
-            [ cursor pointer 
+            [ Css.cursor Css.pointer 
             ] 
         ] 
         [ text linkText ]
