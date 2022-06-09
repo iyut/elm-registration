@@ -41,18 +41,10 @@ update msg model =
       { model | username = username }
     
     PasswordChange password ->
-      if model.passConfirm == password then 
-        { model | isPassMatched = True}
-      
-      else 
-        { model | isPassMatched = False}
+      { model | password = password }
     
     PassConfirmChange passConfirm ->
-      if model.passConfirm == passConfirm then 
-        { model | isPassMatched = True}
-      
-      else 
-        { model | isPassMatched = False}
+      { model | passConfirm = passConfirm }
 
 
 -- SUBSCRIPTIONS
@@ -72,6 +64,7 @@ view model =
     [ viewInputText "text" model.username "Username" "username" "ar_input_username" UsernameChange 
     , viewInputText "password" model.password "Password" "password" "ar_input_password" PasswordChange
     , viewInputText "password" model.passConfirm "Confirm Password" "pass_confirm" "ar_input_password" PassConfirmChange
+    , viewResult model
     ]
 
 viewInputText : String -> String -> String -> String -> String -> ( String -> msg ) -> Html msg
@@ -106,7 +99,7 @@ viewResult model =
 
 textResult : Model -> String 
 textResult model = 
-  if model.isPassMatched == True then 
+  if model.password == model.passConfirm then 
     "Password is matched"
       
   else 
